@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: cosmetics-event-consumer
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/cosmetics_events
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: cosmetics-order-event-processor
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    listener:
+      concurrency: 3
+
+order-topic-name: dream-mysql-orders.dream.orders
