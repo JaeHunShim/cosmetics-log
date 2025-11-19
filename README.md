@@ -138,6 +138,29 @@
 
 	mysql-orders-source.json (이벤트 발행용)
 	orders 테이블의 변경사항을 감지하여, 애플리케이션이 처리할 수 있도록 Kafka로 이벤트를 전송합니다. decimal.handling.mode 설정이 핵심입니다.
+	
+		{
+		  "name": "mysql-orders-source",
+		  "config": {
+		    "connector.class": "io.debezium.connector.mysql.MySqlConnector",
+		    "topic.prefix": "dream-mysql-orders", 
+		    "database.hostname": "mysql", 
+		    "database.port": "3306",
+		    "database.user": "root", 
+		    "database.password": "root",
+		    "database.server.id": "2", 
+		    "database.include.list": "dream",
+		    "table.include.list": "dream.orders",
+		    "decimal.handling.mode": "double",
+		    "key.converter": "org.apache.kafka.connect.json.JsonConverter",
+		    "key.converter.schemas.enable": "false",
+		    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+		    "value.converter.schemas.enable": "false",
+		    "schema.history.internal.kafka.bootstrap.servers": "kafka:9093",
+		    "schema.history.internal.kafka.topic": "schema-changes.dream.orders"
+		  }
+		}
+
 
 		# ./kafka-connect-config/mongodb-sink.json
 		{
@@ -156,7 +179,7 @@
 		  }
 		}
 
-3. 🧪 시스템 실행 및 검증 (Workflow)
+4. 🧪 시스템 실행 및 검증 (Workflow)
    
 	3.1. 시스템 초기화
    
@@ -210,7 +233,7 @@
 	
 	이벤트 처리 검증: MySQL orders 테이블에 status가 PAID인 데이터를 삽입하고, Spring Boot 앱 콘솔 로그와 MongoDB cosmetics_events.order_summaries 컬렉션을 확인합니다.
 
-4. 🔍 트러블슈팅 요약 (Troubleshooting Summary)
+5. 🔍 트러블슈팅 요약 (Troubleshooting Summary)
 
 | 문제 현상                 | 원인 분석                                               | 해결책                                                                                         |
 | --------------------- | --------------------------------------------------- | ------------------------------------------------------------------------------------------- |
